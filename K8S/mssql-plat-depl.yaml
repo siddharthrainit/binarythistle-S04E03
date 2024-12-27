@@ -1,0 +1,98 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mssql-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mssql-depl
+  template:
+      metadata:
+        labels:
+          app: mssql-depl
+      spec:
+        securityContext:
+          fsGroup: 10001
+          runAsUser: 10001
+          runAsGroup: 10001
+        #initContainers:
+          # - name: fix-permissions
+          #   image: busybox
+          #   command: ["sh", "-c", "chown -R 10001:10001 /var/opt/mssql/data"]
+          #   securityContext:
+          #     runAsUser: 0
+          #   volumeMounts:
+          #     - mountPath: /var/opt/mssql/data
+          #       name: mssqldb
+          # - name: installdnsutils
+          #   image: busybox
+          #   command: ['sh', '-c', 'apk add --no-cache dnsutils']
+          #   securityContext:
+          #     runAsUser: 0
+        containers:
+          - name: mssql-depl
+            image: mcr.microsoft.com/mssql/server:2022-latest
+            resources:
+              limits:
+                memory: "2Gi"
+                cpu: "500m"
+            ports:
+              - containerPort: 1433
+            env:
+              - name: MSSQL_PID
+                value: "Express"
+              - name: ACCEPT_EULA
+                value: "Y"            
+              - name: MSSQL_SA_PASSWORD
+                value: "StrongP@ssw0rd"
+              - name: MSSQL_TCP_PORT
+                value: "1433"  # Ensures SQL Server listens on 1433
+            volumeMounts:
+              - mountPath: /var/opt/mssql/data
+                name: mssqldb
+        volumes:
+          - name: mssqldb
+            persistentVolumeClaim:
+              claimName: mysql-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mssql-clusterip-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: mssql
+  ports:
+    - name: mssql
+      protocol: TCP
+      port: 1433
+      targetPort: 1433
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mssql-loadbalancer
+spec:
+  type: LoadBalancer
+  selector:
+    app: mssql
+  ports:
+    - protocol: TCP
+      port: 1433
+      targetPort: 1433
+
+        
+
+    
+#kubectl create secret generic mysql --from-literal=SA_PASSWORD="StrongP@ssw0rd""
+#kubectl apply -f .\mssql-plat-depl.yaml
+#kubectl get pods
+#kubectl logs mssql-depl-948bbfc87-n848s -c fix-permissions
+#kubectl describe pod <pod name>
+#kubectl rollout restart deployment mssql-depl
+#kubectl delete pod <pod name>
+#kubectl exec -it mssql-depl-948bbfc87-n848s -- nslookup mssql-clusterip-srvcls
+
+#kubectl get svc mssql-loadbalancer

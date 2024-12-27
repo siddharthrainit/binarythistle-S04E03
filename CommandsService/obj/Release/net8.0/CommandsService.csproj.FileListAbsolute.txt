@@ -1,0 +1,7 @@
+D:\Microservices\Kubernetes\CommandsService\obj\Release\net8.0\CommandsService.csproj.AssemblyReference.cache
+D:\Microservices\Kubernetes\CommandsService\obj\Release\net8.0\CommandsService.GeneratedMSBuildEditorConfig.editorconfig
+D:\Microservices\Kubernetes\CommandsService\obj\Release\net8.0\CommandsService.AssemblyInfoInputs.cache
+D:\Microservices\Kubernetes\CommandsService\obj\Release\net8.0\CommandsService.AssemblyInfo.cs
+D:\Microservices\Kubernetes\CommandsService\obj\Release\net8.0\CommandsService.csproj.CoreCompileInputs.cache
+D:\Microservices\Kubernetes\CommandsService\obj\Release\net8.0\CommandsService.MvcApplicationPartsAssemblyInfo.cs
+D:\Microservices\Kubernetes\CommandsService\obj\Release\net8.0\CommandsService.MvcApplicationPartsAssemblyInfo.cache
