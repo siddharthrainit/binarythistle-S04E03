@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "/Y6pXM1PvVM=",
+  "dgSpecHash": "ZESQgzXTtsg=",
   "success": true,
-  "projectFilePath": "D:\\Microservices\\Kubernetes\\PlatformService\\PlatformService\\PlatformService.csproj",
+  "projectFilePath": "D:\\Tutorials\\binarythistle-S04E03\\PlatformService\\PlatformService\\PlatformService.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\admibn\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
     "C:\\Users\\admibn\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",

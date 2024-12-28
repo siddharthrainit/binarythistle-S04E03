@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Microservices\\Kubernetes\\PlatformService\\PlatformService\\PlatformService.csproj": {}
+    "D:\\Tutorials\\binarythistle-S04E03\\PlatformService\\PlatformService\\PlatformService.csproj": {}
   },
   "projects": {
-    "D:\\Microservices\\Kubernetes\\PlatformService\\PlatformService\\PlatformService.csproj": {
+    "D:\\Tutorials\\binarythistle-S04E03\\PlatformService\\PlatformService\\PlatformService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Microservices\\Kubernetes\\PlatformService\\PlatformService\\PlatformService.csproj",
+        "projectUniqueName": "D:\\Tutorials\\binarythistle-S04E03\\PlatformService\\PlatformService\\PlatformService.csproj",
         "projectName": "PlatformService",
-        "projectPath": "D:\\Microservices\\Kubernetes\\PlatformService\\PlatformService\\PlatformService.csproj",
+        "projectPath": "D:\\Tutorials\\binarythistle-S04E03\\PlatformService\\PlatformService\\PlatformService.csproj",
         "packagesPath": "C:\\Users\\admibn\\.nuget\\packages\\",
-        "outputPath": "D:\\Microservices\\Kubernetes\\PlatformService\\PlatformService\\obj\\",
+        "outputPath": "D:\\Tutorials\\binarythistle-S04E03\\PlatformService\\PlatformService\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\admibn\\AppData\\Roaming\\NuGet\\NuGet.Config",
