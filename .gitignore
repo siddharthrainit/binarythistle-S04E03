@@ -17,9 +17,9 @@
 
 ### DotnetCore ###
 # .NET Core build folders
-bin/
-obj/
-[Oo]ut/
+*/bin/
+*/obj/
+*/[Oo]ut/
 
 # Common node modules locations
 /node_modules
@@ -51,11 +51,11 @@ obj/
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
 # User-specific files
-*.rsuser
-*.suo
-*.user
-*.userosscache
-*.sln.docstates
+*/*.rsuser
+*/*.suo
+*/*.user
+*/*.userosscache
+*/*.sln.docstates
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -64,12 +64,12 @@ obj/
 mono_crash.*
 
 # Build results
-[Dd]ebug/
-[Dd]ebugPublic/
-[Rr]elease/
-[Rr]eleases/
-x64/
-x86/
+*/[Dd]ebug/
+*/[Dd]ebugPublic/
+*/[Rr]elease/
+*/[Rr]eleases/
+*/x64/
+*/x86/
 [Aa][Rr][Mm]/
 [Aa][Rr][Mm]64/
 bld/
