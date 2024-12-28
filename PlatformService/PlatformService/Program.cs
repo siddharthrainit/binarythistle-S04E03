@@ -11,32 +11,36 @@ internal class Program
     private static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-        var webHostEnvironment =builder.Environment;
+        var webHostEnvironment = builder.Environment;
         var service = builder.Services;
         var configuration = builder.Configuration;
 
         // Add services to the container.
-       service.AddControllers();
-       service.AddEndpointsApiExplorer();
-       service.AddSwaggerGen();
-       
-        if(webHostEnvironment.IsProduction())
+        service.AddControllers();
+        service.AddEndpointsApiExplorer();
+        service.AddSwaggerGen();
+
+        if (webHostEnvironment.IsProduction())
         {
-            Console.WriteLine($"--> initializing sql server {configuration.GetConnectionString("PlatformConn")}");
-            service.AddDbContext<AppDbContext>(op=>op.UseSqlServer(configuration.GetConnectionString("PlatformConn")));
+            Console.WriteLine(
+                $"--> initializing sql server {configuration.GetConnectionString("PlatformConn")}"
+            );
+            service.AddDbContext<AppDbContext>(op =>
+                op.UseSqlServer(configuration.GetConnectionString("PlatformConn"))
+            );
             Console.WriteLine("--> initialized sql server");
         }
         else
         {
             Console.WriteLine("--> using in memory database");
-            service.AddDbContext<AppDbContext>(op=>op.UseSqlServer(configuration.GetConnectionString("PlatformConn")));
-            //builder.Services.AddDbContext<AppDbContext>(opt => opt.UseInMemoryDatabase("InMem"));
+            //service.AddDbContext<AppDbContext>(op=>op.UseSqlServer(configuration.GetConnectionString("PlatformConn")));
+            builder.Services.AddDbContext<AppDbContext>(opt => opt.UseInMemoryDatabase("InMem"));
         }
-        
-       service.AddScoped<IPlatformRepository, PlatformRepository>();
-       service.AddHttpClient<ICommandDataClient, HttpCommandDataClient>();
-       service.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-        
+
+        service.AddScoped<IPlatformRepository, PlatformRepository>();
+        service.AddHttpClient<ICommandDataClient, HttpCommandDataClient>();
+        service.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
         Console.WriteLine($"--> CommandService Endpoint {builder.Configuration["CommandService"]}");
 
         var app = builder.Build();
@@ -52,7 +56,7 @@ internal class Program
         app.UseRouting();
         app.UseAuthorization();
 
-        app.MapControllers();        
+        app.MapControllers();
 
         PrepDb.PrepPopulation(app, webHostEnvironment.IsProduction());
         app.Run();

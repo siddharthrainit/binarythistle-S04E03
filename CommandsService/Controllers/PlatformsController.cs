@@ -6,12 +6,9 @@ namespace CommandsService.Controllers;
 [ApiController]
 public class PlatformsController : ControllerBase
 {
-    public PlatformsController()
-    {
-        
-    }
-     
-     [HttpPost]
+    public PlatformsController() { }
+
+    [HttpPost]
     public IActionResult TestInboundConnection()
     {
         Console.WriteLine("--> Inbound POST # Command Service");

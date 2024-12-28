@@ -19,18 +19,21 @@ namespace PlatformService.Data
             {
                 throw new ArgumentNullException(nameof(context));
             }
+
             if(isProduction)
             {
                 Console.WriteLine("Attempty to apply migrations...");
                 try
                 {
                     context.Database.Migrate();
-                }catch(Exception ex)
+                }
+                catch(Exception ex)
                 {
                     Console.WriteLine("Could not run migration");
                     Console.WriteLine(ex.ToString());
                 }
             }
+
             if (!context.Platforms.Any())
             {
                 Console.WriteLine("---- Seeding data ...");
