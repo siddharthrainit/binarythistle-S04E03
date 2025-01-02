@@ -1,10 +1,11 @@
+using System.Security;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using PlatformService.AysncDataServices;
 using PlatformService.Contracts;
 using PlatformService.Models;
 using PlatformService.Repositories;
 using PlatformService.SyncDataService.Http;
-using System.Security;
 
 namespace PlatformService.Controllers
 {
@@ -16,17 +17,23 @@ namespace PlatformService.Controllers
         private readonly IMapper _mapper;
         private readonly ILogger<PlatformsController> _logger;
         private readonly ICommandDataClient _commandDataClient;
+        private readonly IMessageBusClient _messageBus;
 
         public PlatformsController(
-            IPlatformRepository platformRepository, 
-            IMapper mapper, 
+            IPlatformRepository platformRepository,
+            IMapper mapper,
             ILogger<PlatformsController> logger,
-            ICommandDataClient commandDataClient)
+            ICommandDataClient commandDataClient,
+            IMessageBusClient messageBus
+        )
         {
-            _platformRepository = platformRepository ?? throw new ArgumentNullException(nameof(platformRepository));
+            _platformRepository =
+                platformRepository ?? throw new ArgumentNullException(nameof(platformRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _commandDataClient = commandDataClient ?? throw new ArgumentNullException(nameof(commandDataClient));
+            _commandDataClient =
+                commandDataClient ?? throw new ArgumentNullException(nameof(commandDataClient));
+            _messageBus = messageBus ?? throw new ArgumentNullException(nameof(messageBus));
         }
 
         [HttpGet]
@@ -63,15 +70,34 @@ namespace PlatformService.Controllers
             _platformRepository.CreatePlatform(contract);
             _platformRepository.SaveChanges();
             var platformRead = _mapper.Map<PlatformRead>(contract);
-            try{
-                await _commandDataClient.SendPlatformToCommand(platformRead);
-            }catch(Exception ex)
+            Console.WriteLine("Platform created");
+            try
             {
-              _logger.LogError(ex, "--> Could not send synchornosuly Data");
+                await _commandDataClient.SendPlatformToCommand(platformRead);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "--> Could not send synchornosuly Data");
                 Console.WriteLine(ex.Message);
-            }            
-            
-            return CreatedAtRoute(nameof(GetPlatformById), new { guid = platformRead.ExternalId }, platformRead);
+            }
+            Console.WriteLine("Published to RabbitMQ");
+            try
+            {
+                var platformPublishedDto = _mapper.Map<PlatformPublishedDto>(platformRead);
+                platformPublishedDto.Event = "Platform_Published";
+                await _messageBus.PublishNewPlatformAsyc(platformPublishedDto);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("--> Could not send asynchronously");
+                Console.WriteLine(ex.Message);
+            }
+
+            return CreatedAtRoute(
+                nameof(GetPlatformById),
+                new { guid = platformRead.ExternalId },
+                platformRead
+            );
         }
     }
 }

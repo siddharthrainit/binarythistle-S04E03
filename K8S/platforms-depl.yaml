@@ -15,15 +15,9 @@ spec:
       containers:
         - name: platformservice
           image: siddharthrainit/platformservice:latest
+          imagePullPolicy: Always
           ports:
-            - containerPort: 8080
-          resources:
-            requests:
-              memory: "64Mi"
-              cpu: "250m"
-            limits:
-              memory: "128Mi"
-              cpu: "500m"
+            - containerPort: 8080          
 ---
 apiVersion: v1
 kind: Service
@@ -38,6 +32,10 @@ spec:
     protocol: TCP
     port: 8080
     targetPort: 8080
+  - name: platformgrpc
+    protocol: TCP
+    port: 666
+    targetPort: 666
 
 #kubectl apply -f platforms-depl.yaml
 #kubectl get deployments

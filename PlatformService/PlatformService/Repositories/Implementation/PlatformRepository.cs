@@ -11,6 +11,7 @@ namespace PlatformService.Repositories.Implementation
         {
             _context = context;
         }
+
         public void CreatePlatform(Platform platform)
         {
             ArgumentNullException.ThrowIfNull(platform);
@@ -48,7 +49,8 @@ namespace PlatformService.Repositories.Implementation
             return _context.Platforms.ToList();
         }
 
-        public int GetId(Guid externalId) => _context.Platforms.FirstOrDefault(p => p.ExternalId == externalId)?.Id ?? 0;
+        public int GetId(Guid externalId) =>
+            _context.Platforms.FirstOrDefault(p => p.ExternalId == externalId)?.Id ?? 0;
 
         public bool SaveChanges()
         {
